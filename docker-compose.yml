@@ -1,0 +1,50 @@
+version: "3.9"
+
+services:
+  vault1:
+    image: hashicorp/vault:1.18
+    container_name: vault1
+    hostname: vault1
+    command: vault server -config=/vault/config/vault.hcl
+    ports:
+      - "8200:8200"
+    environment:
+      - VAULT_ADDR=http://127.0.0.1:8200
+      - VAULT_API_ADDR=http://vault1:8200
+      - VAULT_CLUSTER_ADDR=http://vault1:8201
+    volumes:
+      - ./vault1/config:/vault/config
+      - ./vault1/data:/vault/data
+    cap_add:
+      - IPC_LOCK
+    restart: unless-stopped
+
+  vault2:
+    image: hashicorp/vault:1.18
+    container_name: vault2
+    hostname: vault2
+    command: vault server -config=/vault/config/vault.hcl
+    environment:
+      - VAULT_API_ADDR=http://vault2:8200
+      - VAULT_CLUSTER_ADDR=http://vault2:8201
+    volumes:
+      - ./vault2/config:/vault/config
+      - ./vault2/data:/vault/data
+    cap_add:
+      - IPC_LOCK
+    restart: unless-stopped
+
+  vault3:
+    image: hashicorp/vault:1.18
+    container_name: vault3
+    hostname: vault3
+    command: vault server -config=/vault/config/vault.hcl
+    environment:
+      - VAULT_API_ADDR=http://vault3:8200
+      - VAULT_CLUSTER_ADDR=http://vault3:8201
+    volumes:
+      - ./vault3/config:/vault/config
+      - ./vault3/data:/vault/data
+    cap_add:
+      - IPC_LOCK
+    restart: unless-stopped
