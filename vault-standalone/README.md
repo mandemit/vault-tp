@@ -130,7 +130,7 @@ rm -rf data
 
 ```
 seal "transit" {
-  address = "http://172.17.0.1:8400"
+  address = "http://host.docker.internal:8400"
   token = "hvs.CAESIHEqPj3EdGIHr8tdvFm6dVEAgiVTYqWFa_JCSpS8PUMCGh4KHGh2cy5PVFh3U1JJNlhqa1YyYkVmZnNCa3hLZk4"
   disable_renewal = "false"
   key_name = "autounseal"
