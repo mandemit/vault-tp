@@ -13,8 +13,8 @@ services:
       - VAULT_API_ADDR=http://vault1:8200
       - VAULT_CLUSTER_ADDR=http://vault1:8201
     volumes:
-      - ./vault1/config:/vault/config
-      - ./vault1/data:/vault/data
+      - ./config/vault1.hcl:/vault/config/vault.hcl
+      - ./data/vault1:/vault/data
     cap_add:
       - IPC_LOCK
     restart: unless-stopped
@@ -28,8 +28,8 @@ services:
       - VAULT_API_ADDR=http://vault2:8200
       - VAULT_CLUSTER_ADDR=http://vault2:8201
     volumes:
-      - ./vault2/config:/vault/config
-      - ./vault2/data:/vault/data
+      - ./config/vault1.hcl:/vault/config/vault.hcl
+      - ./data/vault2:/vault/data
     cap_add:
       - IPC_LOCK
     restart: unless-stopped
@@ -43,8 +43,8 @@ services:
       - VAULT_API_ADDR=http://vault3:8200
       - VAULT_CLUSTER_ADDR=http://vault3:8201
     volumes:
-      - ./vault3/config:/vault/config
-      - ./vault3/data:/vault/data
+      - ./config/vault1.hcl:/vault/config/vault.hcl
+      - ./data/vault3:/vault/data
     cap_add:
       - IPC_LOCK
     restart: unless-stopped
