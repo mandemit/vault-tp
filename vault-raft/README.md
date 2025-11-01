@@ -14,12 +14,15 @@ docker compose ps
 docker compose logs
 ```
 
+## URL 
+
+* Vault: [http://localhost:8200]()
 
 ## 🔧 Initialisation du cluster
 * Initialise Vault seulement sur le premier nœud :
 
 ```
-docker exec -it vault1 vault operator init
+docker exec -it vault1 vault operator init |tee key.txt
 ```
 example de sortie
 ```
@@ -56,6 +59,7 @@ docker exec -it vault1 vault operator unseal
 ```
 docker exec -it vault1 vault login <root_token>
 # ou en local 
+export VAULT_ADDR=http://localhost:8200
 vault login <root_token>
 ```
 
@@ -77,12 +81,12 @@ vault1    vault1:8201    leader      true
 
 * Ajout du nœud vault2
 ```
-docker exec -e VAULT_ADDR='http://vault2:8200' -it vault2 vault operator raft join http://vault1:8200
+docker exec -it vault2 vault operator raft join http://vault1:8200
 ```
 
 * Ajout du nœud vault3
 ```
-docker exec -e VAULT_ADDR='http://vault3:8200' -it vault3 vault operator raft join http://vault1:8200
+docker exec -it vault3 vault operator raft join http://vault1:8200
 
 ```
 
@@ -91,13 +95,13 @@ docker exec -e VAULT_ADDR='http://vault3:8200' -it vault3 vault operator raft jo
 * Déverrouille Vault2  (3 fois avec 3 clés différentes)
 
 ```
-docker exec -e VAULT_ADDR='http://vault2:8200' -it vault2 vault operator unseal
+docker exec -it vault2 vault operator unseal
 ```
 
 * Déverrouille Vault3  (3 fois avec 3 clés différentes)
 
 ```
-docker exec -e VAULT_ADDR='http://vault3:8200' -it vault3 vault operator unseal
+docker exec -it vault3 vault operator unseal
 ```
 
 
@@ -106,7 +110,7 @@ docker exec -e VAULT_ADDR='http://vault3:8200' -it vault3 vault operator unseal
 ## Vérifie  le cluster
 
 ```
-vault operator raft list-peers
+docker exec -it vault1 vault operator raft list-peers
 ```
 * Tu devrais obtenir un tableau du genre :
 ```

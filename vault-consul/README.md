@@ -14,11 +14,16 @@ docker compose ps
 docker compose logs
 ```
 
+## URL 
+
+* Consul: [http://localhost:8500]()
+* Vault: [http://localhost:8300]()
+
 ## 🔧 Initialisation du cluster
 * Initialise Vault seulement sur le premier nœud :
 
 ```
-docker exec -it vault-node1 vault operator init -key-shares=3 -key-threshold=2
+docker exec -it vault-node1 vault operator init -key-shares=3 -key-threshold=2 |tee key.txt
 ```
 example de sortie
 ```
@@ -86,12 +91,10 @@ Active Since    2025-10-31T14:27:58.453483377Z
 * Déverrouille du nœud vault-node2
 ```
 docker exec -it vault-node2 vault operator unseal <key>
-docker exec -it vault-node2 vault operator unseal <key>
 ```
 
 * Déverrouille du nœud vault-node3
 ```
-docker exec -it vault-node3 vault operator unseal <key>
 docker exec -it vault-node3 vault operator unseal <key>
 ```
 

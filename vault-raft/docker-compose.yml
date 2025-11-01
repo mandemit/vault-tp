@@ -26,8 +26,9 @@ services:
     environment:
       - VAULT_API_ADDR=http://vault2:8200
       - VAULT_CLUSTER_ADDR=http://vault2:8201
+      - VAULT_ADDR=http://vault2:8200
     volumes:
-      - ./config/vault1.hcl:/vault/config/vault.hcl
+      - ./config/vault2.hcl:/vault/config/vault.hcl
       - ./data/vault2:/vault/data
     cap_add:
       - IPC_LOCK
@@ -41,8 +42,9 @@ services:
     environment:
       - VAULT_API_ADDR=http://vault3:8200
       - VAULT_CLUSTER_ADDR=http://vault3:8201
+      - VAULT_ADDR=http://vault3:8200
     volumes:
-      - ./config/vault1.hcl:/vault/config/vault.hcl
+      - ./config/vault3.hcl:/vault/config/vault.hcl
       - ./data/vault3:/vault/data
     cap_add:
       - IPC_LOCK
