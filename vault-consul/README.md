@@ -91,10 +91,12 @@ Active Since    2025-10-31T14:27:58.453483377Z
 * Déverrouille du nœud vault-node2
 ```
 docker exec -it vault-node2 vault operator unseal <key>
+docker exec -it vault-node2 vault operator unseal <key>
 ```
 
 * Déverrouille du nœud vault-node3
 ```
+docker exec -it vault-node3 vault operator unseal <key>
 docker exec -it vault-node3 vault operator unseal <key>
 ```
 
