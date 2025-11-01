@@ -1,10 +1,19 @@
-# vault-raft-demo
+# vault-raft
 
 ## 🚀 Démarrage
 
 ```
 docker compose up -d
 ```
+
+```
+docker compose ps
+```
+
+```
+docker compose logs
+```
+
 
 ## 🔧 Initialisation du cluster
 * Initialise Vault seulement sur le premier nœud :
