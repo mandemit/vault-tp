@@ -1,5 +1,66 @@
 # vault-raft
 
+## Configurer le cluster vault-raft avec seal transit du cluster vault-standalone
+
+* Preparer l'environnement
+
+```
+export VAULT_ADDR=http://localhost:8400
+vault login <token>
+```
+
+* Enable and configure transit secrets engine
+
+```
+vault secrets enable transit
+vault write -f transit/keys/autounseal
+```
+
+* Create an autounseal policy
+
+```
+vault policy write autounseal -<<EOF
+path "transit/encrypt/autounseal" {
+   capabilities = [ "update" ]
+}
+
+path "transit/decrypt/autounseal" {
+   capabilities = [ "update" ]
+}
+EOF
+```
+
+* Créer un token dédié qui accéde a cette policie
+
+```
+vault token create -policy=autounseal
+```
+
+```
+Key                  Value
+---                  -----
+token                hvs.CAESIHEqPj3EdGIHr8tdvFm6dVEAgiVTYqWFa_JCSpS8PUMCGh4KHGh2cy5PVFh3U1JJNlhqa1YyYkVmZnNCa3hLZk4
+token_accessor       9Q0Mw6yz8coDFgvAalqTyVNJ
+token_duration       768h
+token_renewable      true
+token_policies       ["autounseal" "default"]
+identity_policies    []
+policies             ["autounseal" "default"]
+```
+
+* Configurer le seal transit sur tout les configutration des 3 noeud 
+
+```
+seal "transit" {
+  address = "http://host.docker.internal:8400"
+  token = "hvs.CAESIHEqPj3EdGIHr8tdvFm6dVEAgiVTYqWFa_JCSpS8PUMCGh4KHGh2cy5PVFh3U1JJNlhqa1YyYkVmZnNCa3hLZk4"
+  disable_renewal = "false"
+  key_name = "autounseal"
+  mount_path = "transit/"
+  tls_skip_verify = "true"
+}
+```
+
 ## 🚀 Démarrage
 
 ```
@@ -19,93 +80,20 @@ docker compose logs
 * Vault: [http://localhost:8200]()
 
 ## 🔧 Initialisation du cluster
-* Initialise Vault seulement sur le premier nœud :
+* Initialisation 
 
 ```
 docker exec -it vault1 vault operator init |tee key.txt
 ```
-example de sortie
-```
-Unseal Key 1: PC+7gcusLGkaCQ9cllS0eZ88B4KAHuHMOQu6Elt/Jlr8
-Unseal Key 2: 29VEnm3FIh9BVDxHqvcrahK6DVL5RDKiXYSixhf15ixF
-Unseal Key 3: FJtLo7MgOy2vlQLfYNtYK5QqY3Q19oL3a94rYybtaKEp
-Unseal Key 4: nkwVMkvwaTi6rm8j/W5S0VYBCh+MYJZKKL0Gg7wd8BhX
-Unseal Key 5: VznF27F02er5Ct5/lvzH6OKrEt+F1l9O6qXLV6rb0/CP
 
-Initial Root Token: hvs.PMZ3pqXpQgl9hkHC0HYMH3tc
-
-Vault initialized with 5 key shares and a key threshold of 3. Please securely
-distribute the key shares printed above. When the Vault is re-sealed,
-restarted, or stopped, you must supply at least 3 of these keys to unseal it
-before it can start servicing requests.
-
-Vault does not store the generated root key. Without at least 3 keys to
-reconstruct the root key, Vault will remain permanently sealed!
-
-It is possible to generate new unseal keys, provided you have a quorum of
-existing unseal keys shares. See "vault operator rekey" for more information.
-```
-
-Garde les 5 Unseal Keys et le Root Token.
-
-* Déverrouille Vault1 : (3 fois avec 3 clés différentes)
+* Ajoute les autres nœuds au cluster Raft :
 
 ```
-docker exec -it vault1 vault operator unseal
-```
-
-* Connecte-toi avec le Root Token :
-
-```
-docker exec -it vault1 vault login <root_token>
-# ou en local 
-export VAULT_ADDR=http://localhost:8200
-vault login <root_token>
+docker exec -it vault2 vault operator raft join http://vault1:8200
+docker exec -it vault3 vault operator raft join http://vault1:8200
 ```
 
 * Vérifie  le cluster
-
-```
-docker exec -it vault1 vault operator raft list-peers
-# ou en local 
-vault operator raft list-peers
-```
-Tu devrais obtenir un tableau du genre
-```
-Node      Address        State       Voter
-----      -------        -----       -----
-vault1    vault1:8201    leader      true
-```
-
-## Ajoute les autres nœuds au cluster Raft :
-
-* Ajout du nœud vault2
-```
-docker exec -it vault2 vault operator raft join http://vault1:8200
-```
-
-* Ajout du nœud vault3
-```
-docker exec -it vault3 vault operator raft join http://vault1:8200
-
-```
-
-## Déverrouille les autres nœuds 
-
-* Déverrouille Vault2  (3 fois avec 3 clés différentes)
-
-```
-docker exec -it vault2 vault operator unseal
-```
-
-* Déverrouille Vault3  (3 fois avec 3 clés différentes)
-
-```
-docker exec -it vault3 vault operator unseal
-```
-
-
-
 
 ## Vérifie  le cluster
 

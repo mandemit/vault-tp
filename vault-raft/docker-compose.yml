@@ -11,6 +11,7 @@ services:
       - VAULT_ADDR=http://vault1:8200
       - VAULT_API_ADDR=http://vault1:8200
       - VAULT_CLUSTER_ADDR=http://vault1:8201
+
     volumes:
       - ./config/vault1.hcl:/vault/config/vault.hcl
       - ./data/vault1:/vault/data

@@ -17,11 +17,11 @@ api_addr = "http://vault1:8200"
 cluster_addr = "http://vault1:8201"
 disable_mlock = true
 
-# seal "transit" {
-#   address = "http://172.17.0.1:8400"
-#   token = "hvs.CAESIHEqPj3EdGIHr8tdvFm6dVEAgiVTYqWFa_JCSpS8PUMCGh4KHGh2cy5PVFh3U1JJNlhqa1YyYkVmZnNCa3hLZk4"
-#   disable_renewal = "false"
-#   key_name = "autounseal"
-#   mount_path = "transit/"
-#   tls_skip_verify = "true"
-# }
+seal "transit" {
+  address = "http://host.docker.internal:8400"
+  token = "hvs.CAESIHEqPj3EdGIHr8tdvFm6dVEAgiVTYqWFa_JCSpS8PUMCGh4KHGh2cy5PVFh3U1JJNlhqa1YyYkVmZnNCa3hLZk4"
+  disable_renewal = "false"
+  key_name = "autounseal"
+  mount_path = "transit/"
+  tls_skip_verify = "true"
+}
