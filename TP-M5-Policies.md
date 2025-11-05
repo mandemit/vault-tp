@@ -35,3 +35,10 @@ token_meta_username    student
 2. Créer l'utilisateur `dev` avec la methode d'authentification (userpass) avec la policie dev 
 
 3. Faite de meme pour l'utilsateur `ops`
+
+4. Créer un token tonemporaire avec tout les privilèges 
+
+```
+vault policy write break-glass policies/break-glass.hcl
+vault token create -ttl=180s -explicit-max-ttl=5m -policy=break-glass
+```
