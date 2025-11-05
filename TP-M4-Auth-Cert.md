@@ -33,5 +33,6 @@ vault write auth/cert/certs/my-app \
 curl -k -X POST --cert vault-standalone/tls/serveur1.crt \
     --key vault-standalone/tls/serveur1.key --data '{"name": "my-app"}' \
     https://localhost:8400/v1/auth/cert/login |jq
+    
 ```
 
