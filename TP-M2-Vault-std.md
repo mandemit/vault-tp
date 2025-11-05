@@ -70,6 +70,14 @@ vault operator unseal
 vault login <root_token>
 ```
 
+* Activer l'audit
+
+```
+vault audit enable file file_path=/var/log/vault_audit.log
+vault audit list
+```
+
+
 * Vérifie  le cluster
 
 
@@ -92,3 +100,4 @@ Cluster Name    vault-std
 Cluster ID      9b281a35-b633-7bbc-ee11-4f3d131372e3
 HA Enabled      false
 ```
+
