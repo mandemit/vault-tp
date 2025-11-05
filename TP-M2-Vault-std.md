@@ -28,7 +28,10 @@ Démarrer Vault standalone
 * Initialise Vault  :
 
 ```
-docker exec -it vault vault operator init |tee key.txt
+export VAULT_ADDR='https://localhost:8400'
+export VAULT_SKIP_VERIFY=true
+
+vault operator init |tee key.txt
 ```
 
 example de sortie
@@ -58,15 +61,12 @@ Garde les 5 Unseal Keys et le Root Token.
 * Déverrouille Vault : (3 fois avec 3 clés différentes)
 
 ```
-docker exec -it vault vault operator unseal
+vault operator unseal
 ```
 
 * Connecte-toi avec le Root Token :
 
 ```
-docker exec -it vault vault login <root_token>
-# ou en local 
-export VAULT_ADDR=http://localhost:8400
 vault login <root_token>
 ```
 

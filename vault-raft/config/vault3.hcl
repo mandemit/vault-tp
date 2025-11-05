@@ -18,8 +18,8 @@ cluster_addr = "http://vault3:8201"
 disable_mlock = true
 
 seal "transit" {
-  address = "http://host.docker.internal:8400"
-  token = "hvs.CAESIHEqPj3EdGIHr8tdvFm6dVEAgiVTYqWFa_JCSpS8PUMCGh4KHGh2cy5PVFh3U1JJNlhqa1YyYkVmZnNCa3hLZk4"
+  address = "https://host.docker.internal:8400"
+  token = "hvs.CAESIATOda77mmnZxi2u4JkXAbYRXwCNyL-JgexbSoZpTRzwGh4KHGh2cy51NlR3UjN2aTBkeXVHQUNQRjhQTzZHSk4"
   disable_renewal = "false"
   key_name = "autounseal"
   mount_path = "transit/"

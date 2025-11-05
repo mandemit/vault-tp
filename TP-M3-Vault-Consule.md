@@ -28,7 +28,7 @@ docker compose logs
 * Initialise Vault seulement sur le premier nœud :
 
 ```
-docker exec -it vault-node1 vault operator init -key-shares=3 -key-threshold=2 |tee key.txt
+docker compose exec -it vault-node1 vault operator init -key-shares=3 -key-threshold=2 |tee key.txt
 ```
 example de sortie
 ```
@@ -55,13 +55,13 @@ Garde les 3 Unseal Keys et le Root Token.
 * Déverrouille vault-node1 : (2 fois avec 2 clés différentes)
 
 ```
-docker exec -it vault-node1 vault operator unseal
+docker compose exec -it vault-node1 vault operator unseal
 ```
 
 * Connecte-toi avec le Root Token :
 
 ```
-docker exec -it vault-node1 vault login <root_token>
+docker compose exec -it vault-node1 vault login <root_token>
 # ou en local 
 vault login <root_token>
 ```
@@ -69,7 +69,7 @@ vault login <root_token>
 * Vérifie  le cluster
 
 ```
-docker exec -it vault-node1 vault status
+docker compose exec -it vault-node1 vault status
 ```
 Tu devrais obtenir un tableau du genre
 ```
@@ -95,14 +95,14 @@ Active Since    2025-10-31T14:27:58.453483377Z
 
 * Déverrouille du nœud vault-node2
 ```
-docker exec -it vault-node2 vault operator unseal <key>
-docker exec -it vault-node2 vault operator unseal <key>
+docker compose exec -it vault-node2 vault operator unseal <key>
+docker compose exec -it vault-node2 vault operator unseal <key>
 ```
 
 * Déverrouille du nœud vault-node3
 ```
-docker exec -it vault-node3 vault operator unseal <key>
-docker exec -it vault-node3 vault operator unseal <key>
+docker compose exec -it vault-node3 vault operator unseal <key>
+docker compose exec -it vault-node3 vault operator unseal <key>
 ```
 
 
@@ -110,7 +110,7 @@ docker exec -it vault-node3 vault operator unseal <key>
 ## Vérification du cluster
 
 ```
-docker exec -it vault-node1 vault status
+docker compose exec -it vault-node1 vault status
 ```
 * Résultat attendu :
 ```
@@ -125,4 +125,10 @@ HA Enabled             true
 HA Cluster             https://vault-node1:8201
 HA Mode                standby
 Active Node Address    http://vault-node1:8200
+```
+
+## Arret du cluster
+
+```
+docker compose down
 ```
