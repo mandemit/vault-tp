@@ -1,4 +1,10 @@
-# vault-standalone
+
+
+# TP-M2-Vault-standalone
+
+```
+cd vault-standalone
+```
 
 ## 🚀 Démarrage
 
@@ -13,7 +19,7 @@ docker compose ps
 ```
 docker compose logs
 ```
-
+Démarrer Vault standalone
 ## URL 
 
 * Vault: [http://localhost:8400]()
